@@ -1,0 +1,2092 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Server.Core.WebApi</name>
+    </assembly>
+    <members>
+        <member name="T:Server.Core.WebApi.AndroidLite.AndroidLiteApiHttpHandler">
+            <summary>
+            提供AndroidLite WebAPI的入口。这是一个抽象类。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.ApiHttpHandlerBase">
+            <summary>
+            <see cref="T:System.Web.IHttpHandler"/>的实现，包含了基本的API处理流程。这是一个抽象类。
+            </summary>
+        </member>
+        <member name="F:Server.Core.WebApi.ApiHttpHandlerBase.Code400">
+            <summary>
+            400错误的异常码。
+            </summary>
+        </member>
+        <member name="F:Server.Core.WebApi.ApiHttpHandlerBase.Code500">
+            <summary>
+            500错误的异常码。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHttpHandlerBase.Setup(Server.Core.WebApi.ApiSetup)">
+            <summary>
+            对WebAPI进行注册和配置。
+            </summary>
+            <param name="setup">提供用于Web API注册与配置的方法。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHttpHandlerBase.ResolveDecoders(Server.Core.WebApi.ApiMethodInfo)">
+            <summary>
+            获取指定的API方法所对应的参数解析器。
+            </summary>
+            <param name="method">包含API方法的有关信息。</param>
+            <returns>key为解析器的名称，value为解析器实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHttpHandlerBase.CreateRequestState(System.Web.HttpContext,Server.Core.WebApi.ApiHandlerState)">
+            <summary>
+            创建用于保存当前API请求信息的对象实例。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="handlerState"><see cref="T:Server.Core.WebApi.ApiHandlerState"/>的实例。</param>
+            <returns>用于保存当前API请求信息的对象实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHttpHandlerBase.RetriveRequestMethodName(System.Web.HttpContext,System.Object)">
+            <summary>
+            获取当前API请求所管理的方法名称。
+            若未能获取到名称，返回null。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <returns>方法名称。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHttpHandlerBase.RetrieveRequestDecoderName(System.Web.HttpContext,System.Object)">
+            <summary>
+            获取当前调用的API方法所使用的参数解析器的名称。
+            若未能获取到名称，返回null。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <returns>调用的API方法所使用的参数解析器的名称。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHttpHandlerBase.DecodeParam(System.Web.HttpContext,System.Object,Server.Core.WebApi.IRequestDecoder)">
+            <summary>
+            创建当前调用的API方法所需要的参数值集合。
+            集合以参数名称为key，参数的值为value。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <param name="decoder">用于API参数解析的<see cref="T:Server.Core.WebApi.IRequestDecoder"/>实例。</param>
+            <returns>记录参数名称和对应的值。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHttpHandlerBase.WriteResponse(System.Web.HttpContext,System.Object,Server.Core.WebApi.ApiResponse)">
+            <summary>
+            将指定的<see cref="T:Server.Core.WebApi.ApiResponse"/>序列化并写如HTTP输出流中。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <param name="apiResponse">用于表示API返回的数据。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHttpHandlerBase.GetRequestDescription(System.Web.HttpContext,System.Object,Server.Core.WebApi.ApiResponse)">
+            <summary>
+            获取当前请求的描述信息。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <param name="apiResponse">用于表示API返回的数据。</param>
+            <returns>描述信息。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHttpHandlerBase.OnSuccess(System.Web.HttpContext,System.Object,Server.Core.WebApi.ApiResponse)">
+            <summary>
+            当成功处理API方法调用后触发此方法。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <param name="apiResponse">用于表示API返回的数据。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHttpHandlerBase.OnError(System.Web.HttpContext,System.Object,System.Exception)">
+            <summary>
+            当调用过程中出现未处理异常时触发此方法。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <param name="exception">异常的实例。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHttpHandlerBase.OnMethodNotFound(System.Web.HttpContext,System.Object)">
+            <summary>
+            当本次API访问中未指定访问的方法名称或名称错误时触发此方法。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHttpHandlerBase.OnDecoderNotFound(System.Web.HttpContext,System.Object)">
+            <summary>
+            当本次API访问中指定访问的方法所关联的参数解析器名称不存在时触发此方法。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHttpHandlerBase.TranslateMethodInvocationError(System.Exception)">
+            <summary>
+            处理<see cref="T:Server.Core.WebApi.ApiMethodInfo"/>的调用过程中出现的异常。
+            </summary>
+            <param name="ex"><see cref="T:Server.Core.WebApi.ApiMethodInfo"/>的调用过程中出现的异常。</param>
+            <returns>
+            返回一个<see cref="T:Server.Core.WebApi.ApiResponse"/>实例以表示请求处理成功，后续进入<see cref="M:Server.Core.WebApi.ApiHttpHandlerBase.OnSuccess(System.Web.HttpContext,System.Object,Server.Core.WebApi.ApiResponse)"/>方法；
+            返回null则继续异常处理流程，进入<see cref="M:Server.Core.WebApi.ApiHttpHandlerBase.OnError(System.Web.HttpContext,System.Object,System.Exception)"/>方法。
+            </returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHttpHandlerBase.PreSetup(Server.Core.WebApi.ApiSetup)">
+            <summary>
+            在<see cref="M:Server.Core.WebApi.ApiHttpHandlerBase.Setup(Server.Core.WebApi.ApiSetup)"/>方法执行之前，在同一个<see cref="T:Server.Core.WebApi.ApiSetup"/>对象上执行此方法。
+            </summary>
+            <param name="setup"><see cref="T:Server.Core.WebApi.ApiSetup"/>。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHttpHandlerBase.PostSetup(Server.Core.WebApi.ApiSetup)">
+            <summary>
+            在<see cref="M:Server.Core.WebApi.ApiHttpHandlerBase.Setup(Server.Core.WebApi.ApiSetup)"/>方法执行之后，在同一个<see cref="T:Server.Core.WebApi.ApiSetup"/>对象上执行此方法。
+            </summary>
+            <param name="setup"><see cref="T:Server.Core.WebApi.ApiSetup"/>。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHttpHandlerBase.WriteLog(Common.Logging.LogLevel,System.Object,System.Exception)">
+            <summary>
+            写日志。
+            </summary>
+            <param name="logLevel">
+            指定日志的级别。
+            <see cref="F:Common.Logging.LogLevel.All"/>将作为<see cref="F:Common.Logging.LogLevel.Info"/>处理。
+            </param>
+            <param name="msg">信息。</param>
+            <param name="ex">异常。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHttpHandlerBase.WriteLog(Common.Logging.LogLevel,System.Func{System.String},System.Exception)">
+            <summary>
+            写日志。
+            </summary>
+            <param name="logLevel">
+            指定日志的级别。
+            <see cref="F:Common.Logging.LogLevel.All"/>将作为<see cref="F:Common.Logging.LogLevel.Info"/>处理。
+            </param>
+            <param name="getMsgCallback">获取日志信息的方法。</param>
+            <param name="ex">异常。</param>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiHttpHandlerBase.LogSetup">
+            <summary>
+            获取日志相关的配置信息。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiHttpHandlerBase.LogSuccessRequests">
+            <summary>
+            指定是否将处理成功的API请求写入日志。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiHttpHandlerBase.Logger">
+            <summary>
+            获取当前API使用的<see cref="T:Common.Logging.ILog"/>实例。
+            </summary>
+            <returns>当前API使用的<see cref="T:Common.Logging.ILog"/>实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.AndroidLite.AndroidLiteApiHttpHandler.GetUserHostAddress(System.Web.HttpRequest)">
+            <summary>
+            获取请求方的IP地址。
+            </summary>
+            <param name="request">当前请求对应的<see cref="T:System.Web.HttpRequest"/>实例。</param>
+            <returns>请求方的IP地址。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.AndroidLite.AndroidLiteApiHttpHandler.ResolveDecoders(Server.Core.WebApi.ApiMethodInfo)">
+            <summary>
+            获取指定的API方法所对应的参数解析器。
+            </summary>
+            <param name="method">包含API方法的有关信息。</param>
+            <returns>key为解析器的名称，value为解析器实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.AndroidLite.AndroidLiteApiHttpHandler.CreateRequestState(System.Web.HttpContext,Server.Core.WebApi.ApiHandlerState)">
+            <summary>
+            创建用于保存当前API请求信息的对象实例。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="handlerState"><see cref="T:Server.Core.WebApi.ApiHandlerState"/>的实例。</param>
+            <returns>用于保存当前API请求信息的对象实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.AndroidLite.AndroidLiteApiHttpHandler.RetriveRequestMethodName(System.Web.HttpContext,System.Object)">
+            <summary>
+            获取当前API请求所管理的方法名称。
+            若未能获取到名称，返回null。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <returns>方法名称。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.AndroidLite.AndroidLiteApiHttpHandler.RetrieveRequestDecoderName(System.Web.HttpContext,System.Object)">
+            <summary>
+            获取当前调用的API方法所使用的参数解析器的名称。
+            若未能获取到名称，返回null。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <returns>调用的API方法所使用的参数解析器的名称。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.AndroidLite.AndroidLiteApiHttpHandler.DecodeParam(System.Web.HttpContext,System.Object,Server.Core.WebApi.IRequestDecoder)">
+            <summary>
+            创建当前调用的API方法所需要的参数值集合。
+            集合以参数名称为key，参数的值为value。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <param name="decoder">用于API参数解析的<see cref="T:Server.Core.WebApi.IRequestDecoder"/>实例。</param>
+            <returns>记录参数名称和对应的值。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.AndroidLite.AndroidLiteApiHttpHandler.WriteResponse(System.Web.HttpContext,System.Object,Server.Core.WebApi.ApiResponse)">
+            <summary>
+            将指定的<see cref="T:Server.Core.WebApi.ApiResponse"/>序列化并写如HTTP输出流中。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <param name="apiResponse">用于表示API返回的数据。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.AndroidLite.AndroidLiteApiHttpHandler.GetRequestDescription(System.Web.HttpContext,System.Object,Server.Core.WebApi.ApiResponse)">
+            <summary>
+            获取当前请求的描述信息。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <param name="apiResponse">用于表示API返回的数据。</param>
+            <returns>描述信息。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.AndroidLite.AndroidLiteApiHttpHandler.TranslateMethodInvocationError(System.Exception)">
+            <summary>
+            处理<see cref="T:Server.Core.WebApi.ApiMethodInfo"/>的调用过程中出现的异常。
+            </summary>
+            <param name="ex"><see cref="T:Server.Core.WebApi.ApiMethodInfo"/>的调用过程中出现的异常。</param>
+            <returns>
+            返回一个<see cref="T:Server.Core.WebApi.ApiResponse"/>实例以表示请求处理成功，后续进入<see cref="M:Server.Core.WebApi.ApiHttpHandlerBase.OnSuccess(System.Web.HttpContext,System.Object,Server.Core.WebApi.ApiResponse)"/>方法；
+            返回null则继续异常处理流程，进入<see cref="M:Server.Core.WebApi.ApiHttpHandlerBase.OnError(System.Web.HttpContext,System.Object,System.Exception)"/>方法。
+            </returns>
+        </member>
+        <member name="P:Server.Core.WebApi.AndroidLite.AndroidLiteApiHttpHandler.DesKey">
+            <summary>
+            获取用于API数据加解密的秘钥。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.AndroidLite.AndroidLiteApiHttpHandler.AndroidLiteApiRequestState">
+            <summary>
+            保存请求处理过程中的数据。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.ApiException">
+            <summary>
+            表示WebAPI调用期间发生的异常。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiException.#ctor(System.Int32)">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.ApiException"/>的新实例。
+            </summary>
+            <param name="code">描述此异常的状态码。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiException.#ctor(System.Int32,System.String)">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.ApiException"/>的新实例。
+            </summary>
+            <param name="code">描述此异常的状态码。</param>
+            <param name="message">描述此异常的消息。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiException.#ctor(System.Int32,System.String,System.Exception)">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.ApiException"/>的新实例。
+            </summary>
+            <param name="code">描述此异常的状态码。</param>
+            <param name="message">描述此异常的消息。</param>
+            <param name="innerException">指定引起此异常的异常。</param>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiException.Code">
+            <summary>
+            获取描述此异常的状态码。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiException.Message">
+            <summary>
+            获取此异常的描述，包含状态码和消息。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiException.Description">
+            <summary>
+            获取描述此异常的消息，不包含状态码。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.ApiHandlerState">
+            <summary>
+            包含API方法的有关信息。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHandlerState.AddMethod(System.String,Server.Core.WebApi.ApiMethodInfo)">
+            <summary>
+            添加一个API方法注册信息。
+            </summary>
+            <param name="methodName">API方法的名称。</param>
+            <param name="apiMethodInfo">API方法的注册信息。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHandlerState.AddDecoder(System.String,System.String,Server.Core.WebApi.IRequestDecoder)">
+            <summary>
+            添加一个API方法所关联的参数解析器。
+            </summary>
+            <param name="methodName">API方法的名称。</param>
+            <param name="decoderName">参数解析器的名称。</param>
+            <param name="decoder">参数解析器的实例。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHandlerState.GetMethod(System.String)">
+            <summary>
+            获取具有指定名称的API方法的注册信息。若指定的名称不存在，返回null。
+            </summary>
+            <param name="methodName">API方法的名称。</param>
+            <returns>API方法的注册信息。若指定的名称不存在，返回null。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiHandlerState.GetDecoder(System.String,System.String)">
+            <summary>
+            获取指定API方法所关联的具有指定名称的参数解析器。若相关名称不存在，返回null。
+            </summary>
+            <param name="methodName">API方法的名称。</param>
+            <param name="decoderName">参数解析器的名称。</param>
+            <returns>参数解析器的实例。若相关名称不存在，返回null。</returns>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiHandlerState.LogSetup">
+            <summary>
+            获取或设置日志想的配置信息。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.ApiMethodAttribute">
+            <summary>
+            标记一个方法在<see cref="T:Server.Core.WebApi.ApiSetup"/>中被自动注册为WebAPI方法。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiMethodAttribute.#ctor">
+            <summary>
+            初始化类型的新实例。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiMethodAttribute.#ctor(System.String)">
+            <summary>
+            初始化类型的新实例并指定API方法的名称。
+            </summary>
+            <param name="name">API方法的名称。</param>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiMethodAttribute.Name">
+            <summary>
+            获取或设置API方法的名称。若设置为<c>null</c>则表示使用默认的名称。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiMethodAttribute.AutoCacheEnabled">
+            <summary>
+            指示缓存是否启用。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiMethodAttribute.CacheExpiration">
+            <summary>
+            获取或设置当前API方法的缓存超时时间，单位为秒。
+            使用非正数表示不指定缓存超时时间，在此情况下通常将套用全局的设置。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiMethodAttribute.CacheNamespace">
+            <summary>
+            获取或设置当前API方法的缓存命名空间。
+            使用<c>null</c>表示不指定，在此情况下通常将套用全局的设置。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.ApiMethodContext">
+            <summary>
+            包含一次API方法调用期间的有关信息。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiMethodContext.GetCachedResult">
+            <summary>
+            获取当前被调用方法所关联的缓存值。
+            若没有被缓存的值，返回<c>null</c>。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiMethodContext.SetCachedResult(System.Object)">
+            <summary>
+            设置当前被调用方法所关联的缓存值。
+            </summary>
+            <param name="obj">需缓存的值。</param>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiMethodContext.Current">
+            <summary>
+            获取或设置本次API方法调用所关联的<see cref="T:Server.Core.WebApi.ApiMethodContext"/>。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiMethodContext.CacheKey">
+            <summary>
+            获取当前API方法所使用的缓存键。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiMethodContext.Raw">
+            <summary>
+            获取当前API方法所关联的原始<see cref="T:System.Web.HttpContext"/>。
+            若当前并不处于HTTP请求上下文中，返回<c>null</c>。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.EmptyParamMethodRequestDecoder">
+            <summary>
+            总是返回0个参数值的<see cref="T:Server.Core.WebApi.IRequestDecoder"/>实现。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.IRequestDecoder">
+            <summary>
+            定义从<see cref="T:System.Web.HttpRequest"/>解析API调用参数信息的方法。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.IRequestDecoder.DecodeParam(System.Web.HttpRequest,System.Object)">
+            <summary>
+            解析<see cref="T:System.Web.HttpRequest"/>并创建该请求所对应要调用方法的参数值集合。
+            集合以参数名称为key，参数的值为value。
+            </summary>
+            <param name="request">HTTP请求。</param>
+            <param name="state">包含用于参数解析的有关数据。</param>
+            <returns>记录参数名称和对应的值。</returns>
+        </member>
+        <member name="F:Server.Core.WebApi.EmptyParamMethodRequestDecoder.Instance">
+            <summary>
+            <see cref="T:Server.Core.WebApi.EmptyParamMethodRequestDecoder"/>的唯一实例。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.Game.GameApiHttpHandler">
+            <summary>
+            定义Game WebAPI的处理流程。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.Game.GameApiHttpHandler.OnMetaParamResolved(Server.Core.WebApi.Game.GameApiMetaRequest)">
+            <summary>
+            当从请求报文中解析出元参数时调用此方法。
+            若需要对元参数进行校验，可重写此方法。
+            </summary>
+            <param name="meta">元参数。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.Game.GameApiHttpHandler.GetUserHostAddress(System.Web.HttpRequest)">
+            <summary>
+            获取请求方的IP地址。
+            </summary>
+            <param name="request">当前请求对应的<see cref="T:System.Web.HttpRequest"/>实例。</param>
+            <returns>请求方的IP地址。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Game.GameApiHttpHandler.ResolveDecoders(Server.Core.WebApi.ApiMethodInfo)">
+            <summary>
+            获取指定的API方法所对应的参数解析器。
+            </summary>
+            <param name="method">包含API方法的有关信息。</param>
+            <returns>key为解析器的名称，value为解析器实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Game.GameApiHttpHandler.CreateRequestState(System.Web.HttpContext,Server.Core.WebApi.ApiHandlerState)">
+            <summary>
+            创建用于保存当前API请求信息的对象实例。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="handlerState"><see cref="T:Server.Core.WebApi.ApiHandlerState"/>的实例。</param>
+            <returns>用于保存当前API请求信息的对象实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Game.GameApiHttpHandler.RetriveRequestMethodName(System.Web.HttpContext,System.Object)">
+            <summary>
+            获取当前API请求所管理的方法名称。
+            若未能获取到名称，返回null。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <returns>方法名称。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Game.GameApiHttpHandler.RetrieveRequestDecoderName(System.Web.HttpContext,System.Object)">
+            <summary>
+            获取当前调用的API方法所使用的参数解析器的名称。
+            若未能获取到名称，返回null。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <returns>调用的API方法所使用的参数解析器的名称。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Game.GameApiHttpHandler.DecodeParam(System.Web.HttpContext,System.Object,Server.Core.WebApi.IRequestDecoder)">
+            <summary>
+            创建当前调用的API方法所需要的参数值集合。
+            集合以参数名称为key，参数的值为value。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <param name="decoder">用于API参数解析的<see cref="T:Server.Core.WebApi.IRequestDecoder"/>实例。</param>
+            <returns>记录参数名称和对应的值。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Game.GameApiHttpHandler.WriteResponse(System.Web.HttpContext,System.Object,Server.Core.WebApi.ApiResponse)">
+            <summary>
+            将指定的<see cref="T:Server.Core.WebApi.ApiResponse"/>序列化并写如HTTP输出流中。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <param name="apiResponse">用于表示API返回的数据。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.Game.GameApiHttpHandler.GetRequestDescription(System.Web.HttpContext,System.Object,Server.Core.WebApi.ApiResponse)">
+            <summary>
+            获取当前请求的描述信息。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <param name="apiResponse">用于表示API返回的数据。</param>
+            <returns>描述信息。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Game.GameApiHttpHandler.TranslateMethodInvocationError(System.Exception)">
+            <summary>
+            处理<see cref="T:Server.Core.WebApi.ApiMethodInfo"/>的调用过程中出现的异常。
+            </summary>
+            <param name="ex"><see cref="T:Server.Core.WebApi.ApiMethodInfo"/>的调用过程中出现的异常。</param>
+            <returns>
+            返回一个<see cref="T:Server.Core.WebApi.ApiResponse"/>实例以表示请求处理成功，后续进入<see cref="M:Server.Core.WebApi.ApiHttpHandlerBase.OnSuccess(System.Web.HttpContext,System.Object,Server.Core.WebApi.ApiResponse)"/>方法；
+            返回null则继续异常处理流程，进入<see cref="M:Server.Core.WebApi.ApiHttpHandlerBase.OnError(System.Web.HttpContext,System.Object,System.Exception)"/>方法。
+            </returns>
+        </member>
+        <member name="P:Server.Core.WebApi.Game.GameApiHttpHandler.DesKey">
+            <summary>
+            获取用于API数据加解密的秘钥。若为null，则传输时不进行加解密操作。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.Game.GameApiHttpHandler.GameApiRequestState">
+            <summary>
+            保存请求处理过程中的数据。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.Game.GameApiMetaRequest">
+            <summary>
+            定义Game WebAPI的请求报文中包含的元参数。
+            </summary>
+        </member>
+        <member name="F:Server.Core.WebApi.Game.GameApiMetaRequest.F">
+            <summary>
+            指定返回数据的传输格式的选项：
+            p 回执数据使用明文传输、c 回执数据使用密文传输。
+            </summary>
+        </member>
+        <member name="F:Server.Core.WebApi.Game.GameApiMetaRequest.T">
+            <summary>
+            发送请求时的时间，使用UNIX时间戳。
+            </summary>
+        </member>
+        <member name="F:Server.Core.WebApi.Game.GameApiMetaRequest.XorEncryptorFactor">
+            <summary>
+            加密解密报文使用的异或因子。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.Game.GameInlineParamJsonDecoder">
+            <summary>
+            <see cref="T:Server.Core.WebApi.IRequestDecoder"/>的实现。
+            将HTTP请求的body中的JSON的各属性以一一对应的关系映射到注册的.net方法参数上。
+            </summary>
+            <remarks>
+            若请求中的JSON为 { a: 123, b: "abc", c: 1.1}
+            对应注册的.net方法为 M(int a, string b, float c)，
+            则JSON中的a、b、c属性将分别映射到.net方法的a、b、c参数。
+            </remarks>
+        </member>
+        <member name="M:Server.Core.WebApi.Game.GameInlineParamJsonDecoder.#ctor(Server.Core.WebApi.ApiMethodParamInfoMap)">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.Game.GameInlineParamJsonDecoder"/>的新实例。
+            </summary>
+            <param name="paramInfoMap">注册WebAPI的方法的参数的有关信息。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.Game.GameInlineParamJsonDecoder.DecodeParam(System.Web.HttpRequest,System.Object)">
+            <summary>
+            解析<see cref="T:System.Web.HttpRequest"/>并创建该请求所对应要调用方法的参数值集合。
+            集合以参数名称为key，参数的值为value。
+            </summary>
+            <param name="request">HTTP请求。</param>
+            <param name="state">包含用于参数解析的有关数据。</param>
+            <returns>记录参数名称和对应的值。</returns>
+        </member>
+        <member name="T:Server.Core.WebApi.Game.GameSingleObjectJsonDecoder">
+            <summary>
+            <see cref="T:Server.Core.WebApi.IRequestDecoder"/>的实现。
+            解析HTTP请求body中的JSON，并将该JSON映射到只有一个参数的方法的唯一参数。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.Game.GameSingleObjectJsonDecoder.#ctor(Server.Core.WebApi.ApiMethodParamInfoMap)">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.Game.GameSingleObjectJsonDecoder"/>的新实例。
+            </summary>
+            <param name="paramInfoMap">包含方法参数相关的信息。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.Game.GameSingleObjectJsonDecoder.DecodeParam(System.Web.HttpRequest,System.Object)">
+            <summary>
+            解析<see cref="T:System.Web.HttpRequest"/>并创建该请求所对应要调用方法的参数值集合。
+            集合以参数名称为key，参数的值为value。
+            </summary>
+            <param name="request">HTTP请求。</param>
+            <param name="state">包含用于参数解析的有关数据。</param>
+            <returns>记录参数名称和对应的值。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.HttpContextExtention.ExplicicParam(System.Web.HttpRequest,System.String)">
+            <summary>
+            按照先<see cref="P:System.Web.HttpRequest.QueryString"/>后<see cref="P:System.Web.HttpRequest.Form"/>的
+            顺序查询指定名称的HTTP请求参数。此方法不会查询cookie及服务器变量。
+            </summary>
+            <param name="request">请求对象。</param>
+            <param name="key">参数的名称。</param>
+            <returns>参数的值。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.HttpContextExtention.ExplicicParamKeys(System.Web.HttpRequest)">
+            <summary>
+            按照先<see cref="P:System.Web.HttpRequest.QueryString"/>后<see cref="P:System.Web.HttpRequest.Form"/>的
+            顺序逐一给出HTTP请求参数的名称。此方法不会查询cookie及服务器变量。
+            </summary>
+            <param name="request">请求对象。</param>
+            <returns>HTTP请求参数的名称的序列。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.HttpContextExtention.BinaryReadToEnd(System.Web.HttpRequest)">
+            <summary>
+            从请求的HTTP body中读取所有的数据。
+            </summary>
+            <param name="request">请求对象。</param>
+            <returns>HTTP body中的数据。</returns>
+        </member>
+        <member name="T:Server.Core.WebApi.HttpRuntimeApiCacheProvider">
+            <summary>
+            使用ASP.net缓存的缓存提供器。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.IEnumerableApiCacheProvider">
+            <summary>
+            定义可通过前缀匹配枚举键值的缓存提供器。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.IApiCacheProvider">
+            <summary>
+            定义API缓存提供器。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.IApiCacheProvider.Get(System.String)">
+            <summary>
+            获取缓存中具有指定键的对象。若该键不存在，返回<c>null</c>。
+            </summary>
+            <param name="key">缓存对象的键。</param>
+            <returns>缓存的对象。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.IApiCacheProvider.Add(System.String,System.Object,System.TimeSpan)">
+            <summary>
+            向缓存中添加对象。若存在具有相同键的缓存对象，则替换之。
+            </summary>
+            <param name="key">缓存的键。</param>
+            <param name="value">缓存的对象。</param>
+            <param name="expiration">缓存的超时时间。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.IApiCacheProvider.Set(System.String,System.Object,System.TimeSpan)">
+            <summary>
+            设置缓存对象，若存在具有相同键的缓存对象不存在，则添加改对象缓存，否则替换之。
+            </summary>
+            <param name="key">缓存的键。</param>
+            <param name="value">缓存的对象。</param>
+            <param name="expiration">缓存的超时时间。</param>
+            <returns>若缓存对象被替换，返回被替换的对象；否则返回<c>null</c>。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.IApiCacheProvider.Remove(System.String)">
+            <summary>
+            移除具有指定键的缓存对象。
+            </summary>
+            <param name="key">缓存对象的键。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.IEnumerableApiCacheProvider.KeyValues(System.String)">
+            <summary>
+            根据缓存对象的键的前缀枚举缓存的键值。
+            </summary>
+            <param name="prefix">键前缀。</param>
+            <returns>具有指定键前缀的缓存的键值序列。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.IEnumerableApiCacheProvider.Clear(System.String)">
+            <summary>
+            根据缓存对象的键的前缀批量移除缓存对象。
+            </summary>
+            <param name="prefix">键前缀。</param>
+        </member>
+        <member name="T:Server.Core.WebApi.CacheKeyHelper">
+            <summary>
+            包含获取方法缓存键相关的方法。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.CacheKeyHelper.GetCacheKeyPrefix(Server.Core.WebApi.ApiMethodInfo)">
+            <summary>
+            获取指定WebAPI方法所使用的缓存键的前缀。
+            此前缀可用于查找、清除特定方法的缓存。
+            </summary>
+            <param name="apiMethodInfo">WebAPI方法的注册信息。</param>
+            <returns>缓存键的前缀。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.CacheKeyHelper.GetCacheKey(Server.Core.WebApi.ApiMethodInfo,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            获取缓存的键。
+            </summary>
+            <param name="apiMethodInfo">WebAPI方法的注册信息。</param>
+            <param name="paramValueMap">方法的参数字典，包含各参数的名称及值。</param>
+            <returns>缓存的键。</returns>
+        </member>
+        <member name="T:Server.Core.WebApi.LogSetup">
+            <summary>
+            API日志的相关配置。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.LogSetup.Default">
+            <summary>
+            获取一个新的<see cref="T:Server.Core.WebApi.LogSetup"/>实例，其中的各项配置已初始化为预定义的值。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:Server.Core.WebApi.LogSetup.LoggerName">
+            <summary>
+            指定日志名称。默认为null，表示使用提供API的<see cref="T:System.Web.IHttpHandler"/>的类名。
+            </summary>
+        </member>
+        <member name="F:Server.Core.WebApi.LogSetup.SuccessLogLevel">
+            <summary>
+            指定API请求处理成功时的日志级别。默认为<see cref="F:Common.Logging.LogLevel.Debug"/>。
+            </summary>
+        </member>
+        <member name="F:Server.Core.WebApi.LogSetup.Code400LogLevel">
+            <summary>
+            指定API请求处理结果状态码为400时的日志级别。默认为<see cref="F:Common.Logging.LogLevel.Warn"/>。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.NoCacheApiCacheProvider">
+            <summary>
+            一个空的缓存提供器，实际上不提供任何缓存实现。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.SingleObjectDictionary">
+            <summary>
+            至多包含一个元素的<see cref="T:System.Collections.Generic.IDictionary`2"/>实现。
+            </summary>
+        </member>
+        <member name="F:Server.Core.WebApi.SingleObjectDictionary.Empty">
+            <summary>
+            不包含任何元素的实现。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.SingleObjectDictionary.#ctor(System.Collections.Generic.IEqualityComparer{System.String})">
+            <summary>
+            初始化类型的新实例。
+            </summary>
+            <param name="equalityComparer">指定元素的比较方式。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.SingleObjectDictionary.#ctor(System.String,System.Object,System.Collections.Generic.IEqualityComparer{System.String})">
+            <summary>
+            初始化类型得新实例。
+            </summary>
+            <param name="key">指定元素的键。</param>
+            <param name="value">指定元素的值。</param>
+            <param name="equalityComparer">指定元素的比较方式。</param>
+        </member>
+        <member name="T:Server.Core.WebApi.Slim.JsonHelper">
+            <summary>
+            包含Slim WebAPI中与JSON序列化有关的方法。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.Slim.MethodParamContract">
+            <summary>
+            此<see cref="T:Server.Core.Serialization.Json.JsonContract"/>用于从JSON中获取调用方法所需的参数信息。
+            其将JSON反序列化到一个字典，其键为方法参数的名称，值为参数的值。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.Slim.MethodParamContract.#ctor(System.Collections.Generic.IDictionary{System.String,Server.Core.Serialization.Json.JsonContract})">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.Slim.MethodParamContract"/>的新实例并指定各参数的类型。
+            </summary>
+            <param name="paramContractMap">包含方法中各个参数的名称参数类型所对应的<see cref="T:Server.Core.Serialization.Json.JsonContract"/>。</param>
+        </member>
+        <member name="T:Server.Core.WebApi.Slim.InlineParamJsonDecoder">
+            <summary>
+            <see cref="T:Server.Core.WebApi.IRequestDecoder"/>的实现。
+            将HTTP请求的body中的JSON的各属性以一一对应的关系映射到注册的.net方法参数上。
+            </summary>
+            <remarks>
+            若请求中的JSON为 { a: 123, b: "abc", c: 1.1}
+            对应注册的.net方法为 M(int a, string b, float c)，
+            则JSON中的a、b、c属性将分别映射到.net方法的a、b、c参数。
+            </remarks>
+        </member>
+        <member name="M:Server.Core.WebApi.Slim.InlineParamJsonDecoder.#ctor(Server.Core.WebApi.ApiMethodParamInfoMap)">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.Slim.InlineParamJsonDecoder"/>的新实例。
+            </summary>
+            <param name="paramInfoMap">注册WebAPI的方法的参数的有关信息。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.Slim.InlineParamJsonDecoder.DecodeParam(System.Web.HttpRequest,System.Object)">
+            <summary>
+            解析<see cref="T:System.Web.HttpRequest"/>并创建该请求所对应要调用方法的参数值集合。
+            集合以参数名称为key，参数的值为value。
+            </summary>
+            <param name="request">HTTP请求。</param>
+            <param name="state">
+            若为null，则JSON将从<see cref="P:System.Web.HttpRequest.InputStream"/>中读取；
+            否则从<paramref name="state"/>中获取，此时<paramref name="state"/>必须是个字符串。
+            </param>
+            <returns>记录参数名称和对应的值。</returns>
+        </member>
+        <member name="T:Server.Core.WebApi.Slim.InlineParamHttpParamDecoder">
+            <summary>
+            <see cref="T:Server.Core.WebApi.IRequestDecoder"/>的实现。
+            将请求的HTTP参数以一一对应的关系映射到注册的.net方法参数上。
+            </summary>
+            <remarks>
+            若请求的HTTP参数为 a=123&amp;b=abc&amp;c=1.1
+            对应注册的.net方法为 M(int a, string b, float c)，
+            则HTTP参数中的a、b、c将分别映射到.net方法的a、b、c参数。
+            </remarks>
+        </member>
+        <member name="M:Server.Core.WebApi.Slim.InlineParamHttpParamDecoder.#ctor(Server.Core.WebApi.ApiMethodParamInfoMap)">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.Slim.InlineParamHttpParamDecoder"/>的新实例。
+            </summary>
+            <param name="paramInfoMap">注册WebAPI的方法的参数的有关信息。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.Slim.InlineParamHttpParamDecoder.DecodeParam(System.Web.HttpRequest,System.Object)">
+            <summary>
+            解析<see cref="T:System.Web.HttpRequest"/>并创建该请求所对应要调用方法的参数值集合。
+            集合以参数名称为key，参数的值为value。
+            </summary>
+            <param name="request">HTTP请求。</param>
+            <param name="state">包含用于参数解析的有关数据。</param>
+            <returns>记录参数名称和对应的值。</returns>
+        </member>
+        <member name="T:Server.Core.WebApi.Slim.SingleObjectJsonDecoder">
+            <summary>
+            <see cref="T:Server.Core.WebApi.IRequestDecoder"/>的实现。
+            解析HTTP请求body中的JSON，并将该JSON映射到只有一个参数的方法的唯一参数。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.Slim.SingleObjectJsonDecoder.#ctor(Server.Core.WebApi.ApiMethodParamInfoMap)">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.Slim.SingleObjectJsonDecoder"/>的新实例。
+            </summary>
+            <param name="paramInfoMap">包含方法参数相关的信息。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.Slim.SingleObjectJsonDecoder.DecodeParam(System.Web.HttpRequest,System.Object)">
+            <summary>
+            解析<see cref="T:System.Web.HttpRequest"/>并创建该请求所对应要调用方法的参数值集合。
+            集合以参数名称为key，参数的值为value。
+            </summary>
+            <param name="request">HTTP请求。</param>
+            <param name="state">
+            若为null，则JSON将从<see cref="P:System.Web.HttpRequest.InputStream"/>中读取；
+            否则从<paramref name="state"/>中获取，此时<paramref name="state"/>必须是个字符串。
+            </param>
+            <returns>记录参数名称和对应的值。</returns>
+        </member>
+        <member name="T:Server.Core.WebApi.Slim.SingleObjectHttpParamDecoder">
+            <summary>
+            <see cref="T:Server.Core.WebApi.IRequestDecoder"/>的实现。
+            解析HTTP请求参数（GET或POST方式），并将这些HTTP参数映射到只有一个参数的方法的唯一参数。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.Slim.SingleObjectHttpParamDecoder.#ctor(Server.Core.WebApi.ApiMethodParamInfoMap,System.Collections.Generic.IEqualityComparer{System.String},Server.Core.WebApi.Slim.SingleObjectHttpParamDecoder.MemberPriority)">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.Slim.SingleObjectHttpParamDecoder"/>的新实例。
+            </summary>
+            <param name="paramInfoMap">包含方法参数相关的信息。</param>
+            <param name="nameComparer">指定类型名称和HTTP参数名称间的匹配方式。</param>
+            <param name="memerPriority">指定匹配类型成员名称时的优先级。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.Slim.SingleObjectHttpParamDecoder.DecodeParam(System.Web.HttpRequest,System.Object)">
+            <summary>
+            解析<see cref="T:System.Web.HttpRequest"/>并创建该请求所对应要调用方法的参数值集合。
+            集合以参数名称为key，参数的值为value。
+            </summary>
+            <param name="request">HTTP请求。</param>
+            <param name="state">包含用于参数解析的有关数据。</param>
+            <returns>记录参数名称和对应的值。</returns>
+        </member>
+        <member name="T:Server.Core.WebApi.Slim.SingleObjectHttpParamDecoder.MemberPriority">
+            <summary>
+            定义匹配类型成员名称时的优先级。
+            </summary>
+        </member>
+        <member name="F:Server.Core.WebApi.Slim.SingleObjectHttpParamDecoder.MemberPriority.Property">
+            <summary>
+            在名称模糊匹配时，若能同时匹配到属性与域，则优先匹配属性名称。
+            </summary>
+        </member>
+        <member name="F:Server.Core.WebApi.Slim.SingleObjectHttpParamDecoder.MemberPriority.Field">
+            <summary>
+            在名称模糊匹配时，若能同时匹配到属性与域，则优先匹配域名称。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.Slim.SlimApiHttpHandler">
+            <summary>
+            提供Slim WebAPI的入口。继承此类以实现API的注册和使用。
+            这是一个抽象类。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.Slim.SlimApiHttpHandler.GetUserHostAddress(System.Web.HttpRequest)">
+            <summary>
+            获取请求方的IP地址。
+            </summary>
+            <param name="request">当前请求对应的<see cref="T:System.Web.HttpRequest"/>实例。</param>
+            <returns>请求方的IP地址。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Slim.SlimApiHttpHandler.ResolveDecoders(Server.Core.WebApi.ApiMethodInfo)">
+            <summary>
+            获取指定的API方法所对应的参数解析器。
+            </summary>
+            <param name="method">包含API方法的有关信息。</param>
+            <returns>key为解析器的名称，value为解析器实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Slim.SlimApiHttpHandler.CreateRequestState(System.Web.HttpContext,Server.Core.WebApi.ApiHandlerState)">
+            <summary>
+            创建用于保存当前API请求信息的对象实例。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="handlerState"><see cref="T:Server.Core.WebApi.ApiHandlerState"/>的实例。</param>
+            <returns>用于保存当前API请求信息的对象实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Slim.SlimApiHttpHandler.RetriveRequestMethodName(System.Web.HttpContext,System.Object)">
+            <summary>
+            获取当前API请求所管理的方法名称。
+            若未能获取到名称，返回null。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <returns>方法名称。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Slim.SlimApiHttpHandler.RetrieveRequestDecoderName(System.Web.HttpContext,System.Object)">
+            <summary>
+            获取当前调用的API方法所使用的参数解析器的名称。
+            若未能获取到名称，返回null。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <returns>调用的API方法所使用的参数解析器的名称。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Slim.SlimApiHttpHandler.DecodeParam(System.Web.HttpContext,System.Object,Server.Core.WebApi.IRequestDecoder)">
+            <summary>
+            创建当前调用的API方法所需要的参数值集合。
+            集合以参数名称为key，参数的值为value。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <param name="decoder">用于API参数解析的<see cref="T:Server.Core.WebApi.IRequestDecoder"/>实例。</param>
+            <returns>记录参数名称和对应的值。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Slim.SlimApiHttpHandler.WriteResponse(System.Web.HttpContext,System.Object,Server.Core.WebApi.ApiResponse)">
+            <summary>
+            将指定的<see cref="T:Server.Core.WebApi.ApiResponse"/>序列化并写如HTTP输出流中。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <param name="apiResponse">用于表示API返回的数据。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.Slim.SlimApiHttpHandler.GetRequestDescription(System.Web.HttpContext,System.Object,Server.Core.WebApi.ApiResponse)">
+            <summary>
+            获取当前请求的描述信息。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <param name="apiResponse">用于表示API返回的数据。</param>
+            <returns>描述信息。</returns>
+        </member>
+        <member name="P:Server.Core.WebApi.Slim.SlimApiHttpHandler.PingEnabled">
+            <summary>
+            指定是否允许自动注册一个PING方法，该方法简单的返回“PONG”。
+            可使用此方法检测接口的可用性。
+            默认值为false。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.Slim.SlimApiHttpHandler.SlimApiRequestState">
+            <summary>
+            保存请求处理过程中的数据。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.ApiMethodInfo">
+            <summary>
+            包含WebAPI方法的注册信息和有关操作。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiMethodInfo.#ctor(System.Func{System.Object},System.Reflection.MethodInfo)">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.ApiMethodInfo"/>的新实例。
+            </summary>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodInfo">被注册为WebAPI的方法。</param>
+            <exception cref="T:System.ArgumentNullException">当<paramref name="methodInfo"/>为null。</exception>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiMethodInfo.Invoke(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            执行一次WebAPI中绑定的方法。
+            </summary>
+            <param name="paramValueMap">
+            方法的参数字典，包含各参数的名称及值。
+            若有参数未在字典中给出，该参数将保持默认值（对于引用类型为null，值类型为0）。
+            若字典本身为null，则所有的参数都保持默认值。
+            </param>
+            <returns>方法的返回值。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiMethodInfo.Invoke(System.Object[])">
+            <summary>
+            执行一次WebAPI中绑定的方法。
+            </summary>
+            <param name="param">与方法参数签名顺序和长度一致的参数数组。</param>
+            <returns>方法的返回值。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiMethodInfo.BuildParamArray(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            获得与方法参数签名顺序和长度一致的参数数组。该数据可用于直接调用方法。
+            </summary>
+            <param name="paramValueMap">
+            方法的参数字典，包含各参数的名称及值。
+            若有参数未在字典中给出，该参数将保持默认值（对于引用类型为null，值类型为0）。
+            若字典本身为null，则所有的参数都保持默认值。
+            </param>
+            <returns>与方法参数签名顺序和长度一致的参数数组。</returns>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiMethodInfo.ParamInfoMap">
+            <summary>
+            获取WebAPI方法的参数信息。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiMethodInfo.Method">
+            <summary>
+            获取当前注册中的关联的<see cref="T:System.Reflection.MethodInfo"/>。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiMethodInfo.MethodName">
+            <summary>
+            获取调用当前WebAPI所使用的名称。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiMethodInfo.CacheExpiration">
+            <summary>
+            获取当前WebAPI所用缓存的超时时间。若未开启缓存，则为<see cref="F:System.TimeSpan.Zero"/>。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiMethodInfo.CacheProvider">
+            <summary>
+            获取当前WebAPI所使用的缓存提供器。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiMethodInfo.CacheNamespace">
+            <summary>
+            获取当前WebAPI注册中使用的缓存命名空间。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiMethodInfo.AutoCacheEnabled">
+            <summary>
+            是否允许对当前方法进行自动缓存。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.ApiMethodSetup">
+            <summary>
+            提供API方法注册的便捷入口。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiMethodSetup.#ctor(Server.Core.WebApi.ApiSetup,Server.Core.WebApi.ApiMethodInfo)">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的新实例。
+            </summary>
+            <param name="setup">调用此构造函数的<see cref="T:Server.Core.WebApi.ApiSetup"/>实例。</param>
+            <param name="apiMethodInfo">注册的API方法的有关信息。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiMethodSetup.Name(System.String)">
+            <summary>
+            设置API方法的名称。若未使用此方法设置名称，将使用默认的名称（一般同注册的方法名）。
+            </summary>
+            <param name="name">API方法的名称，可以是任意非空字符串。</param>
+            <returns>当前<see cref="T:Server.Core.WebApi.ApiMethodSetup"/>实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiMethodSetup.CacheProvider(Server.Core.WebApi.IApiCacheProvider)">
+            <summary>
+            为当前注册的方法单独指定缓存提供器。
+            </summary>
+            <param name="cacheProvider">缓存提供器。</param>
+            <returns>当前<see cref="T:Server.Core.WebApi.ApiMethodSetup"/>实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiMethodSetup.CacheExpiration(System.TimeSpan)">
+            <summary>
+            为当前注册的方法单独指定缓存超时时间。
+            </summary>
+            <param name="expiration"></param>
+            <returns>当前<see cref="T:Server.Core.WebApi.ApiMethodSetup"/>超时时间。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiMethodSetup.CacheNamespace(System.String)">
+            <summary>
+            为当前注册的方法单独指定缓存命名空间。
+            </summary>
+            <param name="ns">缓存命名空间。</param>
+            <returns>当前<see cref="T:Server.Core.WebApi.ApiMethodSetup"/>实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiMethodSetup.EnableAutoCache">
+            <summary>
+            开启API方法的自动缓存。
+            没有被指定的缓存配置将套用<see cref="T:Server.Core.WebApi.ApiSetup"/>中设置的缓存配置。
+            </summary>
+            <returns>当前<see cref="T:Server.Core.WebApi.ApiMethodSetup"/>实例。</returns>
+        </member>
+        <member name="T:Server.Core.WebApi.ApiMethodParamInfoMap">
+            <summary>
+            包含WebAPI方法的参数信息和有关操作。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiMethodParamInfoMap.#ctor(System.Reflection.MethodInfo,System.Collections.Generic.IEqualityComparer{System.String})">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.ApiMethodParamInfoMap"/>的新实例。
+            </summary>
+            <param name="methodInfo">注册的方法。</param>
+            <param name="paramNameComparer">
+            指定如何比较参数的名称。若设置为null，则使用<see cref="P:System.StringComparer.OrdinalIgnoreCase"/>。
+            </param>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiMethodParamInfoMap.TryGetParamInfo(System.String,Server.Core.WebApi.ApiParamInfo@)">
+            <summary>
+            获取具有指定名称的<see cref="T:Server.Core.WebApi.ApiParamInfo"/>。
+            </summary>
+            <param name="name">名称。</param>
+            <param name="paramInfo">
+            输出参数。当方法返回<c>true</c>时为具有指定名称的<see cref="T:Server.Core.WebApi.ApiParamInfo"/>的实例。
+            </param>
+            <returns><c>true</c>当指定的名称存在；否则为<c>false</c>。</returns>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiMethodParamInfoMap.Method">
+            <summary>
+            获取当前实例所关联的<see cref="T:System.Reflection.MethodInfo"/>。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiMethodParamInfoMap.ParamInfos">
+            <summary>
+            获取参数名称与<see cref="T:Server.Core.WebApi.ApiParamInfo"/>的序列。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiMethodParamInfoMap.ParamCount">
+            <summary>
+            获取方法中参数的数量。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.ApiParamInfo">
+            <summary>
+            包含WebAPI注册中的方法的参数有关的信息。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiParamInfo.#ctor(System.Int32,System.Reflection.ParameterInfo)">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.ApiParamInfo"/>的新实例。
+            </summary>
+            <param name="index">参数在方法参数表中的索引。</param>
+            <param name="parameterInfo"><see cref="T:System.Reflection.ParameterInfo"/>的实例。</param>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiParamInfo.Name">
+            <summary>
+            获取参数的名称。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiParamInfo.Type">
+            <summary>
+            获取参数的类型。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiParamInfo.IsGenericCollection">
+            <summary>
+            参数的类型是否是一个泛型集合类型。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiParamInfo.Index">
+            <summary>
+            获取参数在方法参数表中的索引。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiParamInfo.Attributes">
+            <summary>
+            获取参数上标记的特性的集合。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.ApiSetup">
+            <summary>
+            提供API注册的便捷入口。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.#ctor(System.Type)">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.ApiSetup"/>的新实例。
+            </summary>
+            <param name="callerType">进行API注册的类型。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.SetupCacheBase(Server.Core.WebApi.IApiCacheProvider,System.TimeSpan)">
+            <summary>
+            设置从当前实例注册的API所使用的缓存提供器。
+            若API方法注册中没有单独指定缓存提供器，将套用此提供器。
+            </summary>
+            <param name="provider">API缓存提供器。</param>
+            <param name="expiration">缓存的超时时间。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method(System.Func{System.Object},System.Reflection.MethodInfo)">
+            <summary>
+            添加一个API方法注册。
+            </summary>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="method">被注册为WebAPI的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method(System.Object,System.Reflection.MethodInfo)">
+            <summary>
+            添加一个API方法注册。
+            </summary>
+            <param name="provider">
+            提供API逻辑实现的类型实例。若方法为静态方法，使用<c>null</c>。
+            </param>
+            <param name="method">被注册为WebAPI的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``1(System.Func{``0})">
+            <summary>
+            注册具有0个参数且有返回值的方法到API注册信息中。
+            </summary>
+            <typeparam name="TResult">方法返回值的类型。</typeparam>
+            <param name="method">注册的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``2(System.Func{``0,``1})">
+            <summary>
+            注册具有1个参数且有返回值的方法到API注册信息中。
+            </summary>
+            <typeparam name="TResult">方法返回值的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <param name="method">注册的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``3(System.Func{``0,``1,``2})">
+            <summary>
+            注册具有2个参数且有返回值的方法到API注册信息中。
+            </summary>
+            <typeparam name="TResult">方法返回值的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <param name="method">注册的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``4(System.Func{``0,``1,``2,``3})">
+            <summary>
+            注册具有3个参数且有返回值的方法到API注册信息中。
+            </summary>
+            <typeparam name="TResult">方法返回值的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <param name="method">注册的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``5(System.Func{``0,``1,``2,``3,``4})">
+            <summary>
+            注册具有4个参数且有返回值的方法到API注册信息中。
+            </summary>
+            <typeparam name="TResult">方法返回值的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <param name="method">注册的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``6(System.Func{``0,``1,``2,``3,``4,``5})">
+            <summary>
+            注册具有5个参数且有返回值的方法到API注册信息中。
+            </summary>
+            <typeparam name="TResult">方法返回值的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <typeparam name="T5">方法中第5个参数的类型。</typeparam>
+            <param name="method">注册的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``7(System.Func{``0,``1,``2,``3,``4,``5,``6})">
+            <summary>
+            注册具有6个参数且有返回值的方法到API注册信息中。
+            </summary>
+            <typeparam name="TResult">方法返回值的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <typeparam name="T5">方法中第5个参数的类型。</typeparam>
+            <typeparam name="T6">方法中第6个参数的类型。</typeparam>
+            <param name="method">注册的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``8(System.Func{``0,``1,``2,``3,``4,``5,``6,``7})">
+            <summary>
+            注册具有7个参数且有返回值的方法到API注册信息中。
+            </summary>
+            <typeparam name="TResult">方法返回值的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <typeparam name="T5">方法中第5个参数的类型。</typeparam>
+            <typeparam name="T6">方法中第6个参数的类型。</typeparam>
+            <typeparam name="T7">方法中第7个参数的类型。</typeparam>
+            <param name="method">注册的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``9(System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8})">
+            <summary>
+            注册具有8个参数且有返回值的方法到API注册信息中。
+            </summary>
+            <typeparam name="TResult">方法返回值的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <typeparam name="T5">方法中第5个参数的类型。</typeparam>
+            <typeparam name="T6">方法中第6个参数的类型。</typeparam>
+            <typeparam name="T7">方法中第7个参数的类型。</typeparam>
+            <typeparam name="T8">方法中第8个参数的类型。</typeparam>
+            <param name="method">注册的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method(System.Action)">
+            <summary>
+            注册具有0个参数且没有返回值的方法到API注册信息中。
+            </summary>
+            <param name="method">注册的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``1(System.Action{``0})">
+            <summary>
+            注册具有1个参数且有返回值的方法到API注册信息中。
+            </summary>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <param name="method">注册的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``2(System.Action{``0,``1})">
+            <summary>
+            注册具有2个参数且有返回值的方法到API注册信息中。
+            </summary>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <param name="method">注册的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``3(System.Action{``0,``1,``2})">
+            <summary>
+            注册具有3个参数且有返回值的方法到API注册信息中。
+            </summary>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <param name="method">注册的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``4(System.Action{``0,``1,``2,``3})">
+            <summary>
+            注册具有4个参数且有返回值的方法到API注册信息中。
+            </summary>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <param name="method">注册的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``5(System.Action{``0,``1,``2,``3,``4})">
+            <summary>
+            注册具有5个参数且有返回值的方法到API注册信息中。
+            </summary>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <typeparam name="T5">方法中第5个参数的类型。</typeparam>
+            <param name="method">注册的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``6(System.Action{``0,``1,``2,``3,``4,``5})">
+            <summary>
+            注册具有6个参数且有返回值的方法到API注册信息中。
+            </summary>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <typeparam name="T5">方法中第5个参数的类型。</typeparam>
+            <typeparam name="T6">方法中第6个参数的类型。</typeparam>
+            <param name="method">注册的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``7(System.Action{``0,``1,``2,``3,``4,``5,``6})">
+            <summary>
+            注册具有7个参数且有返回值的方法到API注册信息中。
+            </summary>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <typeparam name="T5">方法中第5个参数的类型。</typeparam>
+            <typeparam name="T6">方法中第6个参数的类型。</typeparam>
+            <typeparam name="T7">方法中第7个参数的类型。</typeparam>
+            <param name="method">注册的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``8(System.Action{``0,``1,``2,``3,``4,``5,``6,``7})">
+            <summary>
+            注册具有8个参数且有返回值的方法到API注册信息中。
+            </summary>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <typeparam name="T5">方法中第5个参数的类型。</typeparam>
+            <typeparam name="T6">方法中第6个参数的类型。</typeparam>
+            <typeparam name="T7">方法中第7个参数的类型。</typeparam>
+            <typeparam name="T8">方法中第8个参数的类型。</typeparam>
+            <param name="method">注册的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``2(System.Func{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Func{``1}}})">
+            <summary>
+            以非单例的方式添加API注册。
+            </summary>
+            <typeparam name="TProvider">提供API逻辑实现的类型。</typeparam>
+            <typeparam name="TResult">方法返回值的类型。</typeparam>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodSelector">返回要注册为API的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``3(System.Func{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Func{``1,``2}}})">
+            <summary>
+            以非单例的方式添加API注册。
+            </summary>
+            <typeparam name="TProvider">提供API逻辑实现的类型。</typeparam>
+            <typeparam name="TResult">方法返回值的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodSelector">返回要注册为API的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``4(System.Func{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Func{``1,``2,``3}}})">
+            <summary>
+            以非单例的方式添加API注册。
+            </summary>
+            <typeparam name="TProvider">提供API逻辑实现的类型。</typeparam>
+            <typeparam name="TResult">方法返回值的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodSelector">返回要注册为API的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``5(System.Func{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Func{``1,``2,``3,``4}}})">
+            <summary>
+            以非单例的方式添加API注册。
+            </summary>
+            <typeparam name="TProvider">提供API逻辑实现的类型。</typeparam>
+            <typeparam name="TResult">方法返回值的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodSelector">返回要注册为API的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``6(System.Func{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Func{``1,``2,``3,``4,``5}}})">
+            <summary>
+            以非单例的方式添加API注册。
+            </summary>
+            <typeparam name="TProvider">提供API逻辑实现的类型。</typeparam>
+            <typeparam name="TResult">方法返回值的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodSelector">返回要注册为API的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``7(System.Func{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Func{``1,``2,``3,``4,``5,``6}}})">
+            <summary>
+            以非单例的方式添加API注册。
+            </summary>
+            <typeparam name="TProvider">提供API逻辑实现的类型。</typeparam>
+            <typeparam name="TResult">方法返回值的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <typeparam name="T5">方法中第5个参数的类型。</typeparam>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodSelector">返回要注册为API的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``8(System.Func{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Func{``1,``2,``3,``4,``5,``6,``7}}})">
+            <summary>
+            以非单例的方式添加API注册。
+            </summary>
+            <typeparam name="TProvider">提供API逻辑实现的类型。</typeparam>
+            <typeparam name="TResult">方法返回值的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <typeparam name="T5">方法中第5个参数的类型。</typeparam>
+            <typeparam name="T6">方法中第6个参数的类型。</typeparam>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodSelector">返回要注册为API的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``9(System.Func{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Func{``1,``2,``3,``4,``5,``6,``7,``8}}})">
+            <summary>
+            以非单例的方式添加API注册。
+            </summary>
+            <typeparam name="TProvider">提供API逻辑实现的类型。</typeparam>
+            <typeparam name="TResult">方法返回值的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <typeparam name="T5">方法中第5个参数的类型。</typeparam>
+            <typeparam name="T6">方法中第6个参数的类型。</typeparam>
+            <typeparam name="T7">方法中第7个参数的类型。</typeparam>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodSelector">返回要注册为API的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``10(System.Func{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Func{``1,``2,``3,``4,``5,``6,``7,``8,``9}}})">
+            <summary>
+            以非单例的方式添加API注册。
+            </summary>
+            <typeparam name="TProvider">提供API逻辑实现的类型。</typeparam>
+            <typeparam name="TResult">方法返回值的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <typeparam name="T5">方法中第5个参数的类型。</typeparam>
+            <typeparam name="T6">方法中第6个参数的类型。</typeparam>
+            <typeparam name="T7">方法中第7个参数的类型。</typeparam>
+            <typeparam name="T8">方法中第8个参数的类型。</typeparam>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodSelector">返回要注册为API的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``1(System.Func{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Action}})">
+            <summary>
+            以非单例的方式添加API注册。
+            </summary>
+            <typeparam name="TProvider">提供API逻辑实现的类型。</typeparam>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodSelector">返回要注册为API的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``2(System.Func{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Action{``1}}})">
+            <summary>
+            以非单例的方式添加API注册。
+            </summary>
+            <typeparam name="TProvider">提供API逻辑实现的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodSelector">返回要注册为API的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``3(System.Func{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Action{``1,``2}}})">
+            <summary>
+            以非单例的方式添加API注册。
+            </summary>
+            <typeparam name="TProvider">提供API逻辑实现的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodSelector">返回要注册为API的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``4(System.Func{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Action{``1,``2,``3}}})">
+            <summary>
+            以非单例的方式添加API注册。
+            </summary>
+            <typeparam name="TProvider">提供API逻辑实现的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodSelector">返回要注册为API的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``5(System.Func{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Action{``1,``2,``3,``4}}})">
+            <summary>
+            以非单例的方式添加API注册。
+            </summary>
+            <typeparam name="TProvider">提供API逻辑实现的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodSelector">返回要注册为API的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``6(System.Func{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Action{``1,``2,``3,``4,``5}}})">
+            <summary>
+            以非单例的方式添加API注册。
+            </summary>
+            <typeparam name="TProvider">提供API逻辑实现的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <typeparam name="T5">方法中第5个参数的类型。</typeparam>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodSelector">返回要注册为API的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``7(System.Func{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Action{``1,``2,``3,``4,``5,``6}}})">
+            <summary>
+            以非单例的方式添加API注册。
+            </summary>
+            <typeparam name="TProvider">提供API逻辑实现的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <typeparam name="T5">方法中第5个参数的类型。</typeparam>
+            <typeparam name="T6">方法中第6个参数的类型。</typeparam>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodSelector">返回要注册为API的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``8(System.Func{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Action{``1,``2,``3,``4,``5,``6,``7}}})">
+            <summary>
+            以非单例的方式添加API注册。
+            </summary>
+            <typeparam name="TProvider">提供API逻辑实现的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <typeparam name="T5">方法中第5个参数的类型。</typeparam>
+            <typeparam name="T6">方法中第6个参数的类型。</typeparam>
+            <typeparam name="T7">方法中第7个参数的类型。</typeparam>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodSelector">返回要注册为API的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Method``9(System.Func{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Action{``1,``2,``3,``4,``5,``6,``7,``8}}})">
+            <summary>
+            以非单例的方式添加API注册。
+            </summary>
+            <typeparam name="TProvider">提供API逻辑实现的类型。</typeparam>
+            <typeparam name="T1">方法中第1个参数的类型。</typeparam>
+            <typeparam name="T2">方法中第2个参数的类型。</typeparam>
+            <typeparam name="T3">方法中第3个参数的类型。</typeparam>
+            <typeparam name="T4">方法中第4个参数的类型。</typeparam>
+            <typeparam name="T5">方法中第5个参数的类型。</typeparam>
+            <typeparam name="T6">方法中第6个参数的类型。</typeparam>
+            <typeparam name="T7">方法中第7个参数的类型。</typeparam>
+            <typeparam name="T8">方法中第8个参数的类型。</typeparam>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="methodSelector">返回要注册为API的方法。</param>
+            <returns><see cref="T:Server.Core.WebApi.ApiMethodSetup"/>的实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Auto``1(``0,System.Boolean,System.Reflection.BindingFlags)">
+            <summary>
+            从指定类型的实例加载API方法的注册。
+            </summary>
+            <typeparam name="TProvider">提供API方法的类型。</typeparam>
+            <param name="provider">提供API方法的实例。</param>
+            <param name="parseAttribute">
+            若为true，则仅加载标记有<see cref="T:Server.Core.WebApi.ApiMethodAttribute"/>的方法；否则加载所有方法。
+            方法的筛选受<paramref name="bindingFlags"/>影响。
+            </param>
+            <param name="bindingFlags">指定方法的过滤方式。默认加载所有公共方法。</param>
+            <returns>返回被注册的API方法的注册信息。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.Auto``1(System.Func{``0},System.Boolean,System.Reflection.BindingFlags)">
+            <summary>
+            从指定类型加载API方法的注册。
+            </summary>
+            <param name="provider">返回一个对象，该对象为提供API逻辑实现的类型实例。</param>
+            <param name="parseAttribute">
+            若为true，则仅加载标记有<see cref="T:Server.Core.WebApi.ApiMethodAttribute"/>的方法；否则加载所有方法。
+            方法的筛选受<paramref name="bindingFlags"/>影响。
+            </param>
+            <param name="bindingFlags">指定方法的过滤方式。默认加载所有公共方法。</param>
+            <returns>返回被注册的API方法的注册信息。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.ApiSetup.FromType(System.Type,System.Boolean,System.Boolean,System.Reflection.BindingFlags)">
+            <summary>
+            从指定类型加载API方法的注册。可以使用此方法加载静态/抽象类中的方法。
+            若加载实例方法，则类型必须有一个无参的构造函数。
+            </summary>
+            <param name="providerType">提供API方法的类型。</param>
+            <param name="singleton">true若在API提供对象上使用单例模式；否则为false。默认为true。</param>
+            <param name="parseAttribute">
+            若为true，则仅加载标记有<see cref="T:Server.Core.WebApi.ApiMethodAttribute"/>的方法；否则加载所有方法。
+            方法的筛选受<paramref name="bindingFlags"/>影响。
+            </param>
+            <param name="bindingFlags">指定方法的过滤方式。默认加载所有公共方法。</param>
+            <returns>返回被注册的API方法的注册信息。</returns>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiSetup.CallerType">
+            <summary>
+            获取进行API注册的类型。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiSetup.CacheProvider">
+            <summary>
+            获取API缓存提供器。若API方法注册中没有单独指定缓存提供器，则套用此缓存提供器。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiSetup.CacheExpiration">
+            <summary>
+            获取缓存的超时时间。若API方法注册中没有单独指定超时时间，则套用此超时时间。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiSetup.Log">
+            <summary>
+            获取日志相关的配置入口。
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.ApiSetup.ApiMethodInfos">
+            <summary>
+            获取于当前实例注册的所有API方法注册信息的序列。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.Slim.SlimBizApiHttpHandler">
+            <summary>
+            能够捕获并转换<see cref="T:Server.Core.BizExeption"/>的<see cref="T:Server.Core.WebApi.Slim.SlimApiHttpHandler"/>。
+            </summary>
+            <remarks>
+            捕获<see cref="T:Server.Core.BizExeption"/>，将<see cref="P:Server.Core.BizExeption.Code"/>和<see cref="P:Server.Core.BizExeption.RawMessage"/>
+            作为<see cref="T:Server.Core.WebApi.ApiResponse"/>的信息，而不使用默认的Code 500作为返回码。
+            </remarks>
+        </member>
+        <member name="M:Server.Core.WebApi.Slim.SlimBizApiHttpHandler.TranslateMethodInvocationError(System.Exception)">
+            <summary>
+            处理<see cref="T:Server.Core.WebApi.ApiMethodInfo"/>的调用过程中出现的异常。
+            </summary>
+            <param name="ex"><see cref="T:Server.Core.WebApi.ApiMethodInfo"/>的调用过程中出现的异常。</param>
+            <returns>
+            返回一个<see cref="T:Server.Core.WebApi.ApiResponse"/>实例以表示请求处理成功，后续进入<see cref="M:Server.Core.WebApi.ApiHttpHandlerBase.OnSuccess(System.Web.HttpContext,System.Object,Server.Core.WebApi.ApiResponse)"/>方法；
+            返回null则继续异常处理流程，进入<see cref="M:Server.Core.WebApi.ApiHttpHandlerBase.OnError(System.Web.HttpContext,System.Object,System.Exception)"/>方法。
+            </returns>
+        </member>
+        <member name="T:Server.Core.WebApi.Tui.TuiInlineParamDecoder">
+            <summary>
+            <see cref="T:Server.Core.WebApi.IRequestDecoder"/>的实现。
+            将BooMessage中的相关字段映射到注册的.net方法参数上。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiInlineParamDecoder.#ctor(Server.Core.WebApi.ApiMethodParamInfoMap,System.Byte[])">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.Tui.TuiInlineParamDecoder"/>的新实例。
+            </summary>
+            <param name="paramInfoMap">注册WebAPI的方法的参数的有关信息。</param>
+            <param name="desKey">用于API报文解密的秘钥。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiInlineParamDecoder.DecodeParam(System.Web.HttpRequest,System.Object)">
+            <summary>
+            解析<see cref="T:System.Web.HttpRequest"/>并创建该请求所对应要调用方法的参数值集合。
+            集合以参数名称为key，参数的值为value。
+            </summary>
+            <param name="request">HTTP请求。</param>
+            <param name="state">包含用于参数解析的有关数据。</param>
+            <returns>记录参数名称和对应的值。</returns>
+        </member>
+        <member name="T:Server.Core.WebApi.Tui.TuiMethodParameterContract">
+            <summary>
+            将BooMessage反序列化到一组参数信息，这些参数用于调用相关的方法。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiMethodParameterContract.#ctor(System.Collections.Generic.IEnumerable{Server.Core.Serialization.BooMessaging.Contracts.BooObjectMemberInfo})">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.Tui.TuiMethodParameterContract"/>的新实例并指定各参数的类型。
+            </summary>
+            <param name="members">包含方法中各个参数的名称参数类型所对应的<see cref="T:Server.Core.Serialization.BooMessaging.BooContract"/>。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiMethodParameterContract.DoWrite(Server.Core.Serialization.BooMessaging.BooWriter,System.Object)">
+            <summary>
+            重写此方法以控制数据写入过程。
+            </summary>
+            <param name="writer"><see cref="T:Server.Core.Serialization.BooMessaging.BooWriter"/>的实例。</param>
+            <param name="obj">写入的数据。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiMethodParameterContract.DoRead(Server.Core.Serialization.BooMessaging.BooReader)">
+            <summary>
+            重写此方法以控制数据读取过程。
+            </summary>
+            <param name="reader"><see cref="T:Server.Core.Serialization.BooMessaging.BooReader"/>的实例。</param>
+            <returns>读取到的数据。</returns>
+        </member>
+        <member name="P:Server.Core.WebApi.Tui.TuiMethodParameterContract.IsPackage">
+            <summary>
+            true若当前契约用于映射一个BooMessage数据包；false则表示当前契约映射一个字段。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.Tui.TuiSingleObjectParamDecoder">
+            <summary>
+            解析HTTP请求body中数据映射到只有一个参数的方法的唯一参数。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiSingleObjectParamDecoder.#ctor(Server.Core.WebApi.ApiMethodParamInfoMap,System.Byte[])">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.Tui.TuiSingleObjectParamDecoder"/>的新实例。
+            </summary>
+            <param name="paramInfoMap">包含方法参数相关的信息。</param>
+            <param name="desKey">用于API报文解密的秘钥。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiSingleObjectParamDecoder.DecodeParam(System.Web.HttpRequest,System.Object)">
+            <summary>
+            解析<see cref="T:System.Web.HttpRequest"/>并创建该请求所对应要调用方法的参数值集合。
+            集合以参数名称为key，参数的值为value。
+            </summary>
+            <param name="request">HTTP请求。</param>
+            <param name="state">包含用于参数解析的有关数据。</param>
+            <returns>记录参数名称和对应的值。</returns>
+        </member>
+        <member name="T:Server.Core.WebApi.Tui.TuiApiEnvironment">
+            <summary>
+            包含TuiApi运行相关的定义与配置。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.Tui.TuiApiEnvironment.ResponseCodes">
+            <summary>
+            定义TuiApi接口回执状态码。
+            </summary>
+        </member>
+        <member name="F:Server.Core.WebApi.Tui.TuiApiEnvironment.ResponseCodes.Success">
+            <summary>
+            成功。
+            </summary>
+        </member>
+        <member name="F:Server.Core.WebApi.Tui.TuiApiEnvironment.ResponseCodes.UnknownEntry">
+            <summary>
+            未知的API方法。
+            </summary>
+        </member>
+        <member name="F:Server.Core.WebApi.Tui.TuiApiEnvironment.ResponseCodes.BadRequest">
+            <summary>
+            错误的请求格式。
+            </summary>
+        </member>
+        <member name="F:Server.Core.WebApi.Tui.TuiApiEnvironment.ResponseCodes.InternalError">
+            <summary>
+            内部错误。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.Tui.TuiApiHttpHandler">
+            <summary>
+            提供Slim WebAPI的入口。继承此类以实现API的注册和使用。
+            这是一个抽象类。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiApiHttpHandler.GetUserHostAddress(System.Web.HttpRequest)">
+            <summary>
+            获取请求方的IP地址。
+            </summary>
+            <param name="request">当前请求对应的<see cref="T:System.Web.HttpRequest"/>实例。</param>
+            <returns>请求方的IP地址。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiApiHttpHandler.ResolveDecoders(Server.Core.WebApi.ApiMethodInfo)">
+            <summary>
+            获取指定的API方法所对应的参数解析器。
+            </summary>
+            <param name="method">包含API方法的有关信息。</param>
+            <returns>key为解析器的名称，value为解析器实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiApiHttpHandler.CreateRequestState(System.Web.HttpContext,Server.Core.WebApi.ApiHandlerState)">
+            <summary>
+            创建用于保存当前API请求信息的对象实例。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="handlerState"><see cref="T:Server.Core.WebApi.ApiHandlerState"/>的实例。</param>
+            <returns>用于保存当前API请求信息的对象实例。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiApiHttpHandler.RetriveRequestMethodName(System.Web.HttpContext,System.Object)">
+            <summary>
+            获取当前API请求所管理的方法名称。
+            若未能获取到名称，返回null。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <returns>方法名称。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiApiHttpHandler.RetrieveRequestDecoderName(System.Web.HttpContext,System.Object)">
+            <summary>
+            获取当前调用的API方法所使用的参数解析器的名称。
+            若未能获取到名称，返回null。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <returns>调用的API方法所使用的参数解析器的名称。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiApiHttpHandler.DecodeParam(System.Web.HttpContext,System.Object,Server.Core.WebApi.IRequestDecoder)">
+            <summary>
+            创建当前调用的API方法所需要的参数值集合。
+            集合以参数名称为key，参数的值为value。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <param name="decoder">用于API参数解析的<see cref="T:Server.Core.WebApi.IRequestDecoder"/>实例。</param>
+            <returns>记录参数名称和对应的值。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiApiHttpHandler.WriteResponse(System.Web.HttpContext,System.Object,Server.Core.WebApi.ApiResponse)">
+            <summary>
+            将指定的<see cref="T:Server.Core.WebApi.ApiResponse"/>序列化并写如HTTP输出流中。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <param name="apiResponse">用于表示API返回的数据。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiApiHttpHandler.GetRequestDescription(System.Web.HttpContext,System.Object,Server.Core.WebApi.ApiResponse)">
+            <summary>
+            获取当前请求的描述信息。
+            </summary>
+            <param name="context">当前请求的<see cref="T:System.Web.HttpContext"/>实例。</param>
+            <param name="requestState">用于保存当前API请求信息的对象实例。</param>
+            <param name="apiResponse">用于表示API返回的数据。</param>
+            <returns>描述信息。</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiApiHttpHandler.TranslateMethodInvocationError(System.Exception)">
+            <summary>
+            处理<see cref="T:Server.Core.WebApi.ApiMethodInfo"/>的调用过程中出现的异常。
+            </summary>
+            <param name="ex"><see cref="T:Server.Core.WebApi.ApiMethodInfo"/>的调用过程中出现的异常。</param>
+            <returns>
+            返回一个<see cref="T:Server.Core.WebApi.ApiResponse"/>实例以表示请求处理成功，后续进入<see cref="M:Server.Core.WebApi.ApiHttpHandlerBase.OnSuccess(System.Web.HttpContext,System.Object,Server.Core.WebApi.ApiResponse)"/>方法；
+            返回null则继续异常处理流程，进入<see cref="M:Server.Core.WebApi.ApiHttpHandlerBase.OnError(System.Web.HttpContext,System.Object,System.Exception)"/>方法。
+            </returns>
+        </member>
+        <member name="P:Server.Core.WebApi.Tui.TuiApiHttpHandler.DesKey">
+            <summary>
+            获取用于API数据加解密的秘钥。若为null，则传输时不进行加解密操作。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.Tui.TuiApiHttpHandler.TuiApiRequestState">
+            <summary>
+            保存请求处理过程中的数据。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.Tui.TuiApiResponseEnvelope">
+            <summary>
+            定义基于BooMessage协议的API的基本回执结构。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiApiResponseEnvelope.#ctor">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.Tui.TuiApiResponseEnvelope"/>的新实例。
+            初始化后回执状态为“成功”。
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiApiResponseEnvelope.#ctor(System.Object)">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.Tui.TuiApiResponseEnvelope"/>的新实例。
+            初始化后回执状态为“成功”。
+            </summary>
+            <param name="data">返回的数据。</param>
+        </member>
+        <member name="M:Server.Core.WebApi.Tui.TuiApiResponseEnvelope.#ctor(System.Int32,System.Object)">
+            <summary>
+            初始化<see cref="T:Server.Core.WebApi.Tui.TuiApiResponseEnvelope"/>的新实例。
+            </summary>
+            <param name="code">返回码：1为成功，其他值表示失败。</param>
+            <param name="data">返回的数据。</param>
+        </member>
+        <member name="F:Server.Core.WebApi.Tui.TuiApiResponseEnvelope.Code">
+            <summary>
+            返回状态码：1为成功，其他值表示失败。
+            </summary>
+        </member>
+        <member name="F:Server.Core.WebApi.Tui.TuiApiResponseEnvelope.Data">
+            <summary>
+            返回的数据。
+            </summary>
+        </member>
+        <member name="T:Server.Core.WebApi.TypeHelper">
+            <summary>
+            Provides methods for type management in the API framework.
+            </summary>
+        </member>
+        <member name="F:Server.Core.WebApi.TypeHelper.CollectionElementDelimiter">
+            <summary>
+            The character used to split a string into an array.
+            e.g. a~b~c => ["a", "b", "c"]
+            </summary>
+        </member>
+        <member name="F:Server.Core.WebApi.TypeHelper.CollectionElementSpliter">
+            <summary>
+            The array contains only the <see cref="F:Server.Core.WebApi.TypeHelper.CollectionElementDelimiter"/> 
+            and is used for splitting strings.
+            </summary>
+        </member>
+        <member name="F:Server.Core.WebApi.TypeHelper.GenericCollecitonDefination">
+            <summary>
+            The generic defination of collections.
+            </summary>
+        </member>
+        <member name="M:Server.Core.WebApi.TypeHelper.GetMethodParamStat(System.Reflection.MethodInfo)">
+            <summary>
+            Returns an instance of <see cref="T:Server.Core.WebApi.MemberTypeStat"/> which contains statistic infomation
+            for the parameters of the specified method.
+            </summary>
+            <param name="methodInfo">The method.</param>
+            <returns>An instance of <see cref="T:Server.Core.WebApi.MemberTypeStat"/>.</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.TypeHelper.GetTypeMemberStat(System.Type)">
+            <summary>
+            Returns an instance of <see cref="T:Server.Core.WebApi.MemberTypeStat"/> which contains statistic infomation
+            for the properties and fields in the specified type.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>An instance of <see cref="T:Server.Core.WebApi.MemberTypeStat"/>.</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.TypeHelper.IsSimpleType(System.Type)">
+            <summary>
+            Determines wheter a type is a simple type.
+            A simple type means that the instance can be convert from/to a string easily.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>true if the type is a simple type; otherwise false.</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.TypeHelper.IsSimpleTypeOrCollection(System.Type)">
+            <summary>
+            Determines wheter a type is a simple type or a generic colleciton whose elements are all simple.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>
+            true if the type is a simple type or a generic colleciton whose elements are all simple; otherwise false.
+            </returns>
+        </member>
+        <member name="M:Server.Core.WebApi.TypeHelper.IsGenericCollection(System.Type)">
+            <summary>
+            Determines whether a type is a generic collection type.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>true if the type is a generic colleciton type; otherwise false.</returns>
+        </member>
+        <member name="M:Server.Core.WebApi.TypeHelper.ConvertToCollection(System.String,System.Type)">
+            <summary>
+            Converts a string to a collection specifed by the <paramref name="collectionType"/>. 
+            </summary>
+            <param name="value">The string to convert.</param>
+            <param name="collectionType">The type of the collection.</param>
+            <returns>The instance of the specified type.</returns>
+            <remarks>
+            The string is splitted into an array by <see cref="F:Server.Core.WebApi.TypeHelper.CollectionElementDelimiter"/>,
+            and then each element is to be convert the the target type of the collection.
+            </remarks>
+        </member>
+        <member name="M:Server.Core.WebApi.TypeHelper.ConvertString(System.String,System.Type)">
+            <summary>
+            Converts a string to an equivalant object of the specified type.
+            </summary>
+            <param name="value">The string to convert.</param>
+            <param name="type">The target type.</param>
+            <returns>The instance of the specified type.</returns>
+            <remarks>
+            If <paramref name="value"/> is <c>null</c>, the default value of the type will be returned.
+            </remarks>
+        </member>
+        <member name="P:Server.Core.WebApi.MemberTypeStat.IsPurePlain">
+            <summary>
+            true if there are only plain members (exclude collections).
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.MemberTypeStat.HasCoplexMember">
+            <summary>
+            true if any complex member exists.
+            </summary>
+        </member>
+        <member name="P:Server.Core.WebApi.MemberTypeStat.HasStream">
+            <summary>
+            true if any <see cref="T:System.IO.Stream"/> member exists.
+            </summary>
+        </member>
+    </members>
+</doc>

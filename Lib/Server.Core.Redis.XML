@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Server.Core.Redis</name>
+    </assembly>
+    <members>
+        <member name="T:Server.Core.Redis.Caching.RedisCacheProvider">
+            <summary>
+            使用Redis作为缓存的缓存提供器。
+            </summary>
+        </member>
+        <member name="M:Server.Core.Redis.Caching.RedisCacheProvider.#ctor(System.String,System.Int32)">
+            <summary>
+            初始化类型的新实例。
+            </summary>
+            <param name="configuration">指定Redis的连接配置。</param>
+            <param name="databaseNumber">指定缓存在Redis上使用的数据库编号。</param>
+        </member>
+        <member name="T:Server.Core.Redis.Caching.RedisConvert">
+            <summary>
+            包含CLR对象与Redis存储值间转换的相关方法。
+            </summary>
+        </member>
+        <member name="M:Server.Core.Redis.Caching.RedisConvert.FromRedisValue``1(Server.Core.Redis.Caching.RedisCacheDataType,StackExchange.Redis.RedisValue)">
+            <summary>
+            将<see cref="T:StackExchange.Redis.RedisValue"/>转换为指定的CLR类型的实例。
+            </summary>
+            <typeparam name="T">转换后的目标类型。</typeparam>
+            <param name="dataType">指定值是以何种方式存放在Redis上的。</param>
+            <param name="redisValue">待转换的<see cref="T:StackExchange.Redis.RedisValue"/>。</param>
+            <returns>转换后的值。</returns>
+        </member>
+        <member name="M:Server.Core.Redis.Caching.RedisConvert.ToRedisValue(Server.Core.Redis.Caching.RedisCacheDataType,System.Object)">
+            <summary>
+            将给定的对象转换为<see cref="T:StackExchange.Redis.RedisValue"/>。
+            </summary>
+            <param name="dateType">指定值是以何种方式存放在Redis上的。</param>
+            <param name="value">待转换的对象。</param>
+            <returns>转换后的<see cref="T:StackExchange.Redis.RedisValue"/>。</returns>
+        </member>
+        <member name="M:Server.Core.Redis.Caching.RedisConvert.GetDataType(System.Type)">
+            <summary>
+            获取指定的CLR类型在Redis上存储的方式。
+            </summary>
+            <param name="type">CLR类型。</param>
+            <returns>给定Redis上存储的方式。</returns>
+        </member>
+        <member name="T:Server.Core.Redis.Caching.RedisCacheDataType">
+            <summary>
+            定义CLR类型在Redis上存储的形态。
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Server.Connection</name>
+    </assembly>
+    <members>
+        <member name="M:Server.Connection.CacheUtil.GetCache``1(System.String)">
+            <summary>
+            获取数据缓存
+            </summary>
+            <param name="CacheKey">键</param>
+        </member>
+        <member name="M:Server.Connection.CacheUtil.SetCache(System.String,System.Object,System.DateTime,System.TimeSpan)">
+            <summary>
+            设置数据缓存
+            </summary>
+        </member>
+        <member name="F:Server.Connection.Common.Goximen">
+            <summary>
+            1:切换到厦门机房 0：不切换
+            </summary>
+        </member>
+        <member name="F:Server.Connection.Common.IfDb">
+            <summary>
+            是否操作数据库读取 1：是 0：否.
+            </summary>
+        </member>
+        <member name="M:Server.Connection.Common.WriteFileLog(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            日志记录
+            </summary>
+            <param name="msg">信息</param>
+            <param name="dir">物理地址</param>
+            <param name="logfiePrefix">文件名</param>
+            <param name="isThrowException">出错时是否返回异常</param>
+        </member>
+        <member name="M:Server.Connection.Common.GetValue``1(System.Object,``0)">
+            <summary>
+            数据类型转化.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Server.Connection.Common.DecryptDES(System.String,System.String,System.String)">
+            <summary>
+            解密字符串(参数编码:UTF8)
+            </summary>
+            <param name="decryptString">加密过的字符串</param>
+            <param name="pKey">密钥</param>
+            <param name="iKey">初始化向量</param>
+            <returns>解密后的字符串</returns>
+        </member>
+        <member name="M:Server.Connection.Common.JsonStringToModel``1(System.String)">
+            <summary>
+             Json转化为对象.
+            </summary>
+            <param name="jsonstr"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:Server.Connection.Common.ConnectionJson(System.Int32)">
+            <summary>
+            连接串本地json.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Server.Connection.ConnectionHelper.dbConnection(System.String,System.String,System.Int32)">
+            <summary>
+            获取连接字符串.
+            </summary>
+            <param name="domain">域名.</param>
+            <param name="dbname">数据库名</param>
+            <param name="dbtype">1：sql server 2：mysql</param>
+            <returns></returns>
+        </member>
+        <member name="M:Server.Connection.ConnectionHelper.ChanageLang(System.String,System.String,System.Int32)">
+            <summary>
+            语言转化.
+            </summary>
+            <param name="chinese">中文</param>
+            <param name="domain">对应的域名（tongbu.com 为基础类）</param>
+            <param name="langType">0：中文返回，1：返回英文 2：指定国家语言</param>
+            <returns></returns>
+        </member>
+        <member name="M:Server.Connection.ConnectionHelper.CacheListGet(System.Int32)">
+            <summary>
+            获取文件缓存信息.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Server.Connection.ConfigEntity">
+            <summary>
+            配置文件
+            jokin 2013-11-11
+            </summary>
+        </member>
+        <member name="P:Server.Connection.ConfigEntity.dbname">
+            <summary>
+            数据库名.
+            </summary>
+        </member>
+        <member name="P:Server.Connection.ConfigEntity.dbtype">
+            <summary>
+            1：sql server  2：mysql
+            </summary>
+        </member>
+        <member name="P:Server.Connection.ConfigEntity.onlinvalue">
+            <summary>
+            值.
+            </summary>
+        </member>
+        <member name="P:Server.Connection.ConfigEntity.offlinevalue">
+            <summary>
+            本地值.
+            </summary>
+        </member>
+        <member name="P:Server.Connection.ConfigEntity.lanvalue">
+            <summary>
+            内网.
+            </summary>
+        </member>
+        <member name="P:Server.Connection.ConfigEntity.description">
+            <summary>
+            描述.
+            </summary>
+        </member>
+        <member name="P:Server.Connection.ConfigEntity.status">
+            <summary>
+            状态.
+            </summary>
+        </member>
+        <member name="M:Server.Connection.LanguageHelper.ChanageLang(System.String,System.String,System.Int32)">
+            <summary>
+            语言转化.
+            </summary>
+            <param name="chinese">中文</param>
+            <param name="domain">对应的域名（tongbu.com 为基础类）</param>
+            <param name="langType">0：中文返回，1：返回英文 2：指定国家语言</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
